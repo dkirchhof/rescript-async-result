@@ -6,6 +6,6 @@
     "dev": "rescript build -w"
   },
   "devDependencies": {
-    "rescript": "^10.1.0-rc.1"
+    "rescript": "^10.1.0"
   }
 }
