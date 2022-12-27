@@ -1,6 +1,5 @@
 {
   "name": "rescript-async-result",
-  "namespace": "AsyncResult",
   "version": "0.0.1",
   "sources": {
     "dir" : "src",
