@@ -24,15 +24,15 @@ let mapOk = (ar: t<'ok, 'error>, fn: 'ok => 'ok2): t<'ok2, 'error> =>
   ar->Promise.map(result => {
     switch result {
     | Ok(value) => fn(value)->Ok
-    | error => error
+    | Error(error) => Error(error)
     }
   })
 
-let mapError = (ar, fn) =>
+let mapError = (ar: t<'ok, 'error>, fn: 'error => 'error2): t<'ok, 'error2> =>
   ar->Promise.map(result => {
     switch result {
+    | Ok(ok) => Ok(ok)
     | Error(error) => fn(error)->Error
-    | ok => ok
     }
   })
 
@@ -40,23 +40,23 @@ let flatMap = (ar: t<'ok, 'error>, fn: result<'ok, 'error> => t<'ok2, 'error2>):
   'ok2,
   'error2,
 > => {
-  ar->Promise.map(result => fn(result)->Obj.magic)
+  ar->Promise.flatMap(result => fn(result))
 }
 
-let flatMapOk = (ar: t<'ok, 'error>, fn: 'ok => t<'ok2, 'error2>): t<'ok2, 'error2> => {
-  ar->Promise.map(result => {
+let flatMapOk = (ar: t<'ok, 'error>, fn: 'ok => t<'ok2, 'error>): t<'ok2, 'error> => {
+  ar->Promise.flatMap(result => {
     switch result {
-    | Ok(value) => fn(value)->Obj.magic
-    | error => error
+    | Ok(value) => fn(value)
+    | Error(error) => Error(error)->Js.Promise2.resolve
     }
   })
 }
 
-let flatMapError = (ar: t<'ok, 'error>, fn: 'ok => t<'ok2, 'error2>): t<'ok2, 'error2> => {
-  ar->Promise.map(result => {
+let flatMapError = (ar: t<'ok, 'error>, fn: 'ok => t<'ok, 'error2>): t<'ok, 'error2> => {
+  ar->Promise.flatMap(result => {
     switch result {
-    | Error(value) => fn(value)->Obj.magic
-    | ok => ok
+    | Ok(ok) => ok->Ok->Js.Promise2.resolve
+    | Error(value) => fn(value)
     }
   })
 }
