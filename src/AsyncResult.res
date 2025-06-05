@@ -13,6 +13,14 @@ let error = value => Js.Promise2.resolve(Error(value))
 let fromPromise = (promise, mapError) =>
   promise->Promise.map(result => result->Ok)->Promise.catch(error => error->mapError->Error)
 
+let fromAsyncFn = (fn, mapError) => {
+  params =>
+    params
+    ->fn
+    ->Promise.map(result => result->Ok)
+    ->Promise.catch(error => error->mapError->Error)
+}
+
 let fromResult = result => Js.Promise2.resolve(result)
 
 let fromOption = (option, error) => {

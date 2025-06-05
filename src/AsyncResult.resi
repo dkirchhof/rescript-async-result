@@ -10,6 +10,7 @@ module Promise: {
 let ok: 'ok => t<'ok, 'error>
 let error: 'error => t<'ok, 'error>
 let fromPromise: (promise<'ok>, error => 'error) => t<'ok, 'error>
+let fromAsyncFn: ('params => promise<'ok>, error => 'error) => 'params => t<'ok, 'error>
 let fromResult: result<'ok, 'error> => t<'ok, 'error>
 let fromOption: (option<'ok>, 'error) => t<'ok, 'error>
 

@@ -1,11 +1,11 @@
 {
   "name": "rescript-async-result",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "scripts": {
     "dev": "rescript build -w"
   },
   "devDependencies": {
-    "rescript": "^10.1.0"
+    "rescript": "^11.1.4"
   }
 }
